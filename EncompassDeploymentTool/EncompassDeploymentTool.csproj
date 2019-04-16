@@ -1,0 +1,29 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <OutputType>Exe</OutputType>
+    <TargetFramework>net472</TargetFramework>
+    <AssemblyName>encompass-deploy</AssemblyName>
+    <Company>Panorama Mortgage Group, LLC</Company>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="CommandLineParser" Version="2.4.3" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Reference Include="EllieMae.Encompass.AsmResolver">
+      <HintPath>..\..\..\SmartClientCache\Apps\Ellie Mae\Encompass\EllieMae.Encompass.AsmResolver.dll</HintPath>
+      <Private>true</Private>
+    </Reference>
+    <Reference Include="EllieMae.Encompass.Runtime">
+      <HintPath>..\..\..\SmartClientCache\Apps\Ellie Mae\Encompass\EllieMae.Encompass.Runtime.dll</HintPath>
+      <Private>true</Private>
+    </Reference>
+    <Reference Include="EncompassObjects">
+      <HintPath>..\..\..\SmartClientCache\Apps\Ellie Mae\Encompass\SDK\EncompassObjects.dll</HintPath>
+      <Private>false</Private>
+    </Reference>
+  </ItemGroup>
+
+</Project>

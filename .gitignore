@@ -1,0 +1,11 @@
+# Local Visual Studio settings
+.vs/
+*.suo
+*.user
+
+# NCrunch cache
+_NCrunch_*
+
+# Compiled code
+bin/
+obj/
