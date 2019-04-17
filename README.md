@@ -1,5 +1,7 @@
 # encompass-deploy
 
+[![Build Status](https://dev.azure.com/panorama-mortgage-group/Panorama%20Apps/_apis/build/status/encompass-deploy?branchName=master)](https://dev.azure.com/panorama-mortgage-group/Panorama%20Apps/_build/latest?definitionId=5&branchName=master)
+
 A command-line tool to help with automated deployment between environments of customizations to Ellie Mae's Encompass.
 
 ## Commands
