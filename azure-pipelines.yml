@@ -5,10 +5,27 @@ pool:
 
 variables:
   solution: '**/*.sln'
+  mainProject: './EncompassDeploymentTool/EncompassDeploymentTool.csproj'
   buildPlatform: 'Any CPU'
   buildConfiguration: 'Release'
 
 steps:
+- powershell: |
+    [xml]$xmlDoc = Get-Content -Path '$(mainProject)'
+    $version = ([string]$xmlDoc.Project.PropertyGroup.Version).Trim()
+
+    Write-Host "Got Version Number $version"
+    Write-Host "##vso[task.setvariable variable=Version]$version"
+
+    if ('$(Build.SourceBranchName)' -ne 'master')
+    {
+        $suffix = "-$(Build.SourceBranchName).$(Build.BuildId)"
+        Write-Host "Got Version Suffix $suffix"
+        Write-Host "##vso[task.setvariable variable=Version]$version$suffix"
+    }
+  displayName: Determine Version Number
+  workingDirectory: $(Build.SourcesDirectory)
+
 - task: NuGetToolInstaller@0
 
 - task: NuGetCommand@2
@@ -31,6 +48,14 @@ steps:
 - task: ArchiveFiles@2
   inputs:
     rootFolderOrFile: '$(Build.BinariesDirectory)'
-    archiveFile: '$(Build.StagingDirectory)\$(Build.BuildId).zip'
+    includeRootFolder: false
+    archiveFile: '$(Build.StagingDirectory)\encompass-deploy-$(Version).zip'
 
 - task: PublishBuildArtifacts@1
+
+- task: KriefMikael.githubtools.GitHubTag.GitHubTag@1
+  displayName: Tag Version
+  inputs:
+    githubEndpoint: 'panorama-mortgage-group'
+    tag: 'v$(Version)'
+  condition: and(succeeded(), eq(variables['Build.SourceBranchName'], 'master'))
