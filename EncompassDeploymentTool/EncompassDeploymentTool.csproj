@@ -1,8 +1,9 @@
-<Project Sdk="Microsoft.NET.Sdk">
+﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
     <OutputType>Exe</OutputType>
     <TargetFramework>net472</TargetFramework>
+    <PlatformTarget>x86</PlatformTarget>
     <AssemblyName>encompass-deploy</AssemblyName>
     <Company>Panorama Mortgage Group, LLC</Company>
     <Version>0.0.1</Version>
