@@ -21,6 +21,7 @@ namespace EncompassDeploymentTool.Actions
             Console.WriteLine($"Getting Form \"{options.FormName}\"");
 
             var form = formManager.GetFormInfoByName(options.FormName);
+            Console.WriteLine($"Form ID is {form.FormID}");
 
             var outputPath = Path.GetFullPath(options.OutputPath);
             var fileName = FileSystem.EncodeFilename(form.Name, false) + ".emfrm";

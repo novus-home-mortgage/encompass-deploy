@@ -4,7 +4,7 @@ using System.Collections.Generic;
 
 namespace EncompassDeploymentTool
 {
-    public class BaseOptions
+    public class EncompassConnectionOptions
     {
         [Option('i', "instance", Required = true, HelpText = "The Instance Name of your Encompass server")]
         public string InstanceName { get; set; }
@@ -17,7 +17,7 @@ namespace EncompassDeploymentTool
     }
 
     [Verb("get-form", HelpText = "Download a custom input form from Encompass")]
-    public class GetFormOptions : BaseOptions
+    public class GetFormOptions : EncompassConnectionOptions
     {
         [Value(0, Required = true, HelpText = "The name of the form to download")]
         public string FormName { get; set; }
@@ -42,7 +42,7 @@ namespace EncompassDeploymentTool
     }
 
     [Verb("import", HelpText = "Import a customization package into Encompass")]
-    public class ImportPackageOptions : BaseOptions
+    public class ImportPackageOptions : EncompassConnectionOptions
     {
         [Value(0, Required = true, HelpText = "The path of the package to import")]
         public string PackagePath { get; set; }
@@ -61,5 +61,18 @@ namespace EncompassDeploymentTool
                 });
             }
         }
+    }
+
+    [Verb("pack", HelpText = "Create a package of customizations")]
+    public class PackOptions
+    {
+        [Value(0, Default = ".", HelpText = "The path to the manifest.xml file that defines the package")]
+        public string ManifestPath { get; set; }
+
+        [Option('o', "output", Default = "./package.empkg", HelpText = "The folder where the package should be saved")]
+        public string OutputPath { get; set; }
+
+        [Option("set-assembly-versions", Default = true, HelpText = "If true, the manifest.xml will be updated with the version numbers of referenced assemblies")]
+        public bool SetAssemblyVersions { get; set; }
     }
 }

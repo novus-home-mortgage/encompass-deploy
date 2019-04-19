@@ -11,6 +11,8 @@ A command-line tool to help with automated deployment between environments of cu
 
 `import`: Uploads a customization package (`.empkg`) file to an Encompass server
 
+`pack`: Create a `.empkg` file based on a manifest.xml
+
 You can run `encompass-deploy --help` for detailed arguments.
 
 The Encompass SmartClient or SDK will need to be installed on the host computer.
