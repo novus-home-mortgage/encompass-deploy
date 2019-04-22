@@ -7,6 +7,8 @@ namespace EncompassDeploymentTool
     {
         static int Main(string[] args)
         {
+            new EllieMae.Encompass.Runtime.RuntimeServices().Initialize();
+
             return Parser.Default.ParseArguments<GetFormOptions, PackOptions, ImportPackageOptions>(args)
                 .WithParsed<EncompassConnectionOptions>(StartEncompassSession)
                 .MapResult(
@@ -19,8 +21,6 @@ namespace EncompassDeploymentTool
 
         static void StartEncompassSession(EncompassConnectionOptions options)
         {
-            new EllieMae.Encompass.Runtime.RuntimeServices().Initialize();
-
             EllieMae.EMLite.RemotingServices.Session.Start(
                 $"https://{options.InstanceName}.ea.elliemae.net${options.InstanceName}",
                 options.UserId,
