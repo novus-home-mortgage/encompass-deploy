@@ -9,7 +9,7 @@ A command-line tool to help with automated deployment between environments of cu
 
 `get-form`: Downloads a custom form (`.emfrm`) from Encompass
 
-`import`: Uploads a customization package (`.empkg`) file to an Encompass server
+`import`: Uploads customization packages (`.empkg`) to an Encompass server
 
 `pack`: Create a `.empkg` file based on a manifest.xml
 

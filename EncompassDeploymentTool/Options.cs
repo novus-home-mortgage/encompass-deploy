@@ -44,7 +44,7 @@ namespace EncompassDeploymentTool
     [Verb("import", HelpText = "Import a customization package into Encompass")]
     public class ImportPackageOptions : EncompassConnectionOptions
     {
-        [Value(0, Required = true, HelpText = "The path of the package to import")]
+        [Value(0, Required = true, HelpText = "The path to the package(s) to import. Wildcards supported. If you do not specify a file, all .empkg files in the given directory will be imported.")]
         public string PackagePath { get; set; }
 
         [Usage]

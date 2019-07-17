@@ -1,6 +1,8 @@
 ﻿using EllieMae.EMLite.Client;
 using EllieMae.EMLite.Packages;
 using System;
+using System.IO;
+using System.Linq;
 
 namespace EncompassDeploymentTool.Actions
 {
@@ -17,14 +19,29 @@ namespace EncompassDeploymentTool.Actions
 
         public int Execute(ImportPackageOptions options)
         {
-            Console.WriteLine($"Importing Package {options.PackagePath}");
+            var directoryName = Path.GetDirectoryName(options.PackagePath);
+            if (string.IsNullOrEmpty(directoryName)) directoryName = ".\\";
 
-            var importer = new PackageImporter(conn, PackageImportConflictOption.Overwrite);
-            var package = new ExportPackage(options.PackagePath);
+            var searchPattern = Path.GetFileName(options.PackagePath);
+            if (string.IsNullOrEmpty(searchPattern)) searchPattern = "*.empkg";
 
-            var success = importer.Import(package);
+            var packagePaths = Directory.EnumerateFiles(directoryName, searchPattern)
+                .Select(Path.GetFullPath);
 
-            return success ? 0 : 1;
+            foreach (var path in packagePaths)
+            {
+                Console.WriteLine($"Importing Package at {path}");
+
+                var importer = new PackageImporter(conn, PackageImportConflictOption.Overwrite);
+                var package = new ExportPackage(path);
+
+                if (!importer.Import(package))
+                {
+                    throw new InvalidOperationException($"Could not import the package at {path}");
+                }
+            }
+
+            return 0;
         }
     }
 }

@@ -6,11 +6,11 @@
     <PlatformTarget>x86</PlatformTarget>
     <AssemblyName>encompass-deploy</AssemblyName>
     <Company>Panorama Mortgage Group, LLC</Company>
-    <Version>0.0.3</Version>
+    <Version>0.0.4</Version>
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="CommandLineParser" Version="2.4.3" />
+    <PackageReference Include="CommandLineParser" Version="2.5.0" />
   </ItemGroup>
 
   <ItemGroup>
