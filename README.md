@@ -13,6 +13,8 @@ A command-line tool to help with automated deployment between environments of cu
 
 `pack`: Create a `.empkg` file based on a manifest.xml
 
+`update-cdo`: Update a value inside of an XML Custom Data Object inside a package
+
 You can run `encompass-deploy --help` for detailed arguments.
 
 The Encompass SmartClient or SDK will need to be installed on the host computer.

@@ -75,4 +75,20 @@ namespace EncompassDeploymentTool
         [Option("set-assembly-versions", Default = true, HelpText = "If true, the manifest.xml will be updated with the version numbers of referenced assemblies")]
         public bool SetAssemblyVersions { get; set; }
     }
+
+    [Verb("update-cdo", HelpText = "Update XML values in a packaged Custom Data Object")]
+    public class UpdateCDOOptions
+    {
+        [Value(0, Required = true, HelpText = "The path to the package file")]
+        public string PackagePath { get; set; }
+
+        [Value(1, Required = true, HelpText = "The name of the CDO to update")]
+        public string CustomDataObjectName { get; set; }
+
+        [Value(2, Required = true, HelpText = "The XPath of the value to update")]
+        public string DataXPath { get; set; }
+
+        [Value(3, Required = true, HelpText = "The value to save")]
+        public string NewValue { get; set; }
+    }
 }
