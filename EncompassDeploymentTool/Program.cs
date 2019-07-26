@@ -9,13 +9,14 @@ namespace EncompassDeploymentTool
         {
             new EllieMae.Encompass.Runtime.RuntimeServices().Initialize();
 
-            return Parser.Default.ParseArguments<GetFormOptions, PackOptions, ImportPackageOptions, UpdateCDOOptions>(args)
+            return Parser.Default.ParseArguments<GetFormOptions, PackOptions, ImportPackageOptions, UpdateCDOOptions, LinkFormOptions>(args)
                 .WithParsed<EncompassConnectionOptions>(StartEncompassSession)
                 .MapResult(
                     (GetFormOptions opts) => new GetFormHandler().Execute(opts),
                     (PackOptions opts) => new PackHandler().Execute(opts),
                     (ImportPackageOptions opts) => new ImportHandler().Execute(opts),
                     (UpdateCDOOptions opts) => new UpdateCDOHandler().Execute(opts),
+                    (LinkFormOptions opts) => new LinkFormHandler().Execute(opts),
                     errs => 1
                 );
         }

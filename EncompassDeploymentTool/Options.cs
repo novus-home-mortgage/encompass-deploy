@@ -41,6 +41,19 @@ namespace EncompassDeploymentTool
         }
     }
 
+    [Verb("link-form", HelpText = "Link a form to a specified codebase version")]
+    public class LinkFormOptions
+    {
+        [Value(0, Required = true, HelpText = "The form file (*.emfrm) to update")]
+        public string FormFileName { get; set; }
+
+        [Value(1, Default = null, HelpText = "The codebase DLL to link to. If omitted, searches for the assembly already referenced in the form in the working directory")]
+        public string CodebaseFileName { get; set; }
+
+        [Value(2, Default = null, HelpText = "The full class name within the codebase assembly. If omitted, uses the class name already referenced in the form.\nWARNING: This tool does not check whether or not the specified class exists in the specified assembly.")]
+        public string ClassName { get; set; }
+    }
+
     [Verb("import", HelpText = "Import a customization package into Encompass")]
     public class ImportPackageOptions : EncompassConnectionOptions
     {
