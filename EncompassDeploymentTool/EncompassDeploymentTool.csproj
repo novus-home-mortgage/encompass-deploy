@@ -5,8 +5,8 @@
     <TargetFramework>net472</TargetFramework>
     <PlatformTarget>x86</PlatformTarget>
     <AssemblyName>encompass-deploy</AssemblyName>
-    <Company>Panorama Mortgage Group, LLC</Company>
-    <Version>0.0.6</Version>
+    <Company>Novus Home Mortgage, a division of Ixonia Bank</Company>
+    <Version>0.0.7</Version>
   </PropertyGroup>
 
   <ItemGroup>
