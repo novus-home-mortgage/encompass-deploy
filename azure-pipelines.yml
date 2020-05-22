@@ -43,11 +43,6 @@ steps:
     clean: true
     msbuildArgs: '/p:OutputPath=$(Build.BinariesDirectory)'
 
-- task: VSTest@2
-  inputs:
-    platform: '$(buildPlatform)'
-    configuration: '$(buildConfiguration)'
-
 - task: DeleteFiles@1
   inputs:
     sourceFolder: '$(Build.BinariesDirectory)'
