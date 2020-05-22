@@ -33,9 +33,13 @@ namespace EncompassDeploymentTool
             // To remedy, let's manipulate the registry in the same way that AppLauncher does
             var path = Assembly.GetExecutingAssembly().Location;
             var dir = Path.GetDirectoryName(path).Replace('\\', '/');
-            var keyName = $@"SOFTWARE\Ellie Mae\SmartClient\{dir}";
 
-            var key = Registry.LocalMachine.OpenSubKey(keyName, true);
+            var keyName = Environment.Is64BitProcess ? @"SOFTWARE\WOW6432Node\Ellie Mae\SmartClient" : @"SOFTWARE\Ellie Mae\SmartClient";
+            var scKey = Registry.LocalMachine.OpenSubKey(keyName, writable: true) ??
+                throw new Exception("Could not locate SmartClient registry key. Is SmartClient installed?");
+            var key = scKey.OpenSubKey(dir, writable: true) ?? scKey.CreateSubKey(dir, writable: true) ??
+                throw new Exception("Could not locate or create registry key for this application. Check permissions?");
+
             key.SetValue("AutoSignOn", "1", RegistryValueKind.String);
             key.SetValue("Credentials", GetCredentials(options.InstanceName), RegistryValueKind.String);
             key.SetValue("SmartClientIDs", options.InstanceName, RegistryValueKind.String);
