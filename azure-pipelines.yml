@@ -29,6 +29,13 @@ steps:
   displayName: Determine Version Number
   workingDirectory: $(Build.SourcesDirectory)
 
+# While this job is not building any .NET Core projects per se, we are using
+# the new .csproj format, so we need the .NET Core SDK to be around to provide
+# some of the requisite MSBuild tasks.
+- task: UseDotNet@2
+  inputs:
+    version: 3.1.x
+
 - task: NuGetToolInstaller@0
 
 - task: NuGetCommand@2
