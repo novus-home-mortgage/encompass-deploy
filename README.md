@@ -1,7 +1,7 @@
 # encompass-deploy
 
 [![Release Version](https://img.shields.io/github/release/novus-home-mortgage/encompass-deploy.svg)](https://github.com/novus-home-mortgage/encompass-deploy/releases/latest)
-[![Build Status](https://dev.azure.com/novus-home-mortgage/Novus/_apis/build/status/encompass-deploy?branchName=master)](https://dev.azure.com/novus-home-mortgage/Novus/_build/latest?definitionId=5&branchName=master)
+[![Build Status](https://dev.azure.com/novus-home-mortgage/Novus/_apis/build/status/encompass-deploy?branchName=main)](https://dev.azure.com/novus-home-mortgage/Novus/_build/latest?definitionId=5&branchName=main)
 
 A command-line tool to help with automated deployment between environments of customizations to Ellie Mae's Encompass.
 
