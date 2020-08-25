@@ -1,5 +1,5 @@
 trigger:
-- master
+- main
 
 pool:
   name: default
@@ -20,7 +20,7 @@ steps:
     Write-Host "Got Version Number $version"
     Write-Host "##vso[task.setvariable variable=Version]$version"
 
-    if ('$(Build.SourceBranchName)' -ne 'master')
+    if ('$(Build.SourceBranchName)' -ne 'main')
     {
         $suffix = "-$(Build.SourceBranchName).$(Build.BuildId)"
         Write-Host "Got Version Suffix $suffix"
@@ -66,6 +66,6 @@ steps:
 - task: KriefMikael.githubtools.GitHubTag.GitHubTag@1
   displayName: Tag Version
   inputs:
-    githubEndpoint: 'panorama-mortgage-group'
+    githubEndpoint: 'novus-home-mortgage'
     tag: 'v$(Version)'
-  condition: and(succeeded(), eq(variables['Build.SourceBranchName'], 'master'))
+  condition: and(succeeded(), eq(variables['Build.SourceBranchName'], 'main'))
