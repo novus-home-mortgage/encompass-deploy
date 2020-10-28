@@ -4,26 +4,30 @@ using System.Reflection;
 using CommandLine;
 using EncompassDeploymentTool.Actions;
 using Microsoft.Win32;
+using System.Threading.Tasks;
 
 namespace EncompassDeploymentTool
 {
     class Program
     {
-        static int Main(string[] args)
+        static async Task<int> Main(string[] args)
         {
-            return Parser.Default.ParseArguments<GetFormOptions, PackOptions, ImportPackageOptions, UpdateCDOOptions, LinkFormOptions>(args)
-                .WithParsed<EncompassConnectionOptions>(ConfigureSmartClient)
-                .MapResult(
-                    (GetFormOptions opts) => new GetFormHandler().Execute(opts),
-                    (PackOptions opts) => new PackHandler().Execute(opts),
-                    (ImportPackageOptions opts) => new ImportHandler().Execute(opts),
-                    (UpdateCDOOptions opts) => new UpdateCDOHandler().Execute(opts),
-                    (LinkFormOptions opts) => new LinkFormHandler().Execute(opts),
-                    errs => 1
-                );
+            var options = await Parser.Default
+                .ParseArguments<GetFormOptions, PackOptions, ImportPackageOptions, UpdateCDOOptions, LinkFormOptions>(args)
+                .WithParsedAsync<EncompassConnectionOptions>(ConfigureSmartClient)
+                .ConfigureAwait(false);
+
+            return options.MapResult(
+                (GetFormOptions opts) => new GetFormHandler().Execute(opts),
+                (PackOptions opts) => new PackHandler().Execute(opts),
+                (ImportPackageOptions opts) => new ImportHandler().Execute(opts),
+                (UpdateCDOOptions opts) => new UpdateCDOHandler().Execute(opts),
+                (LinkFormOptions opts) => new LinkFormHandler().Execute(opts),
+                errs => 1
+            );
         }
 
-        static void ConfigureSmartClient(EncompassConnectionOptions options)
+        static async Task ConfigureSmartClient(EncompassConnectionOptions options)
         {
             // This tool is meant to be run in automated environments.
             // That means no picking your instance with the AppLauncher.
@@ -47,19 +51,45 @@ namespace EncompassDeploymentTool
 
             // Now we can fire up the Ellie stuff
             new EllieMae.Encompass.Runtime.RuntimeServices().Initialize();
-            StartEncompassSession(options);
+            await StartEncompassSession(options).ConfigureAwait(false);
         }
 
         // Must start the session in a different method because .NET can't bind ClientSession.dll
         // into the execution context *at all* until the Encompass runtime is initialized
-        static void StartEncompassSession(EncompassConnectionOptions options)
+        static async Task StartEncompassSession(EncompassConnectionOptions options)
         {
-            EllieMae.EMLite.RemotingServices.Session.Start(
-                $"https://{options.InstanceName}.ea.elliemae.net${options.InstanceName}",
-                options.UserId,
-                options.Password,
-                "encompass-deploy"
-            );
+            // Figure out what version of Encompass we're dealing with
+            var encompassAssembly = typeof(EllieMae.EMLite.RemotingServices.Session).Assembly;
+            var fileVersion = System.Diagnostics.FileVersionInfo.GetVersionInfo(encompassAssembly.Location);
+            var versionNumber = Version.Parse(fileVersion.FileVersion);
+
+            if (versionNumber >= new Version(20, 2))
+            {
+                // Starting with 20.2, we have to login with OAuth
+                using var emClient = new EllieMaeIdpClient();
+
+                var authCode = await emClient.GetAuthCode(options.InstanceName, options.UserId, options.Password)
+                    .ConfigureAwait(false);
+
+                EllieMae.EMLite.RemotingServices.Session.Start(
+                    $"https://{options.InstanceName}.ea.elliemae.net${options.InstanceName}",
+                    string.Empty,
+                    string.Empty,
+                    "encompass-deploy",
+                    true,
+                    null,
+                    authCode);
+            }
+            else
+            {
+                // Pre 20.2, Use the classic login
+                EllieMae.EMLite.RemotingServices.Session.Start(
+                    $"https://{options.InstanceName}.ea.elliemae.net${options.InstanceName}",
+                    options.UserId,
+                    options.Password,
+                    "encompass-deploy"
+                );
+            }
         }
 
         // When you have a static encryption key, and you put it right next to your
