@@ -28,6 +28,11 @@ namespace EncompassDeploymentTool.Actions
             var packagePaths = Directory.EnumerateFiles(directoryName, searchPattern)
                 .Select(Path.GetFullPath);
 
+            if (!packagePaths.Any())
+            {
+                throw new ArgumentException("No packages found to import");
+            }
+
             foreach (var path in packagePaths)
             {
                 Console.WriteLine($"Importing Package at {path}");
