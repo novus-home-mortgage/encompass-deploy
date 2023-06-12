@@ -44,6 +44,7 @@ namespace EncompassDeploymentTool
             var key = scKey.OpenSubKey(dir, writable: true) ?? scKey.CreateSubKey(dir, writable: true) ??
                 throw new Exception("Could not locate or create registry key for this application. Check permissions?");
 
+            key.SetValue("AuthServerURL", "https://hosted.elliemae.com", RegistryValueKind.String);
             key.SetValue("AutoSignOn", "1", RegistryValueKind.String);
             key.SetValue("Credentials", GetCredentials(options.InstanceName), RegistryValueKind.String);
             key.SetValue("SmartClientIDs", options.InstanceName, RegistryValueKind.String);
